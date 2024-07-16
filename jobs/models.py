@@ -8,6 +8,9 @@ from datetime import *
 
 from django.contrib.auth.models import User
 
+import geocoder
+import os
+
 # Create your models here.
 
 class JobType(models.TextChoices):
@@ -68,3 +71,15 @@ class Job(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     
     createdAt = models.DateTimeField(auto_now_add=True)
+    
+    def save(self, *args, **kwargs):
+        g = geocoder.mapquest(self.address, key=os.environ.get("MAPQUEST_CONSUMER_SECRET"))
+        
+        print(g)
+        
+        lng = g.lng
+        lat = g.lat
+        
+        self.point = Point(lng, lat)
+        
+        super(Job, self).save(*args, **kwargs)

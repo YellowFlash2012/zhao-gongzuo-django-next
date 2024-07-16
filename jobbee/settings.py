@@ -35,9 +35,13 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     
     'rest_framework',
+    'corsheaders',
     'django_filters',
     'storages',
     'rest_framework_simplejwt',
+    
+    # apps
+    'jobs.apps.JobsConfig',
 ]
 
 MIDDLEWARE = [
@@ -120,6 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+APPEND_SLASH=False
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
