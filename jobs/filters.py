@@ -13,5 +13,5 @@ class JobFilter(filters.FilterSet):
     
     class Meta:
         model = Job
-        fields = ('keyword', 'location' 'education', 'jobType', 'Experience', 'min_salary', 'max_salary')
+        fields = ('keyword', 'location', 'education', 'jobType', 'experience', 'min_salary', 'max_salary')
         

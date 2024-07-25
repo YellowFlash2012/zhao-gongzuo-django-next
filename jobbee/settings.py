@@ -109,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 REST_FRAMEWORK = {
-    # "EXCEPTION_HANDLER":"eshop.utils.custom_exception_handler.custom_exception_handler",
+    
     'DEFAULT_AUTHENTICATION_CLASSES': (
         
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -118,8 +118,8 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=9),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=3),
-    "BLACKLIST_AFTER_ROTATION": True,
+    # "REFRESH_TOKEN_LIFETIME": timedelta(days=3),
+    # "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
