@@ -6,5 +6,7 @@ urlpatterns = [
     
     path("profile", views.get_user_profile, name="get_user_profile"),
     
+    path("profile/update", views.update_user_profile, name="update_user_profile"),
+    
     
 ]

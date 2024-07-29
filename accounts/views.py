@@ -41,3 +41,25 @@ def get_user_profile(request):
     # first_name = user.data.get("first_name")
     
     return Response({'success':True, 'message':f'Here are the profile details of {user.data.get("first_name")}!', "data":user.data}, status=status.HTTP_200_OK)
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def update_user_profile(request):
+    user = request.user
+    
+    
+    data = request.data
+    
+    user.first_name = data['first_name']
+    user.last_name = data['last_name']
+    user.username = data['email']
+    user.email = data['email']
+    
+    if data['password'] != "":
+        user.password = make_password(data['password'])
+        
+    user.save()
+    
+    serializer = UserSerializer(User, many=False)
+    
+    return Response({'success':True, 'message':'Your profile was updated!', "data":serializer.data}, status=status.HTTP_201_CREATED)

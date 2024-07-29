@@ -109,3 +109,4 @@ def get_topic_stats(request, topic):
     )
 
     return Response({"success":True, "message":"Here are all the jobs related to that topic", "data":stats}, status=status.HTTP_200_OK)
+
