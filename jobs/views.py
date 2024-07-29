@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from .models import *
@@ -37,7 +38,10 @@ def get_one_job(request, pk):
     return Response({"success":True, "message":"Here is the job you requested", "data":serializer.data}, status=status.HTTP_200_OK)
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def add_new_job(request):
+    request.data['user'] = request.data
+    
     data = request.data
     
     job = Job.objects.create(**data)
@@ -47,8 +51,13 @@ def add_new_job(request):
     return Response({"success":True, "message":"The new job was successfully posted!", "data":serializer.data}, status=status.HTTP_201_CREATED)
 
 @api_view(["PUT"])
+@permission_classes([IsAuthenticated])
 def update_one_job(request, pk):
     job = get_object_or_404(Job, id=pk)
+    
+    # check if job creator is the one who wants to update it
+    if job.user != request.user:
+        return Response({"success": False, "message":"You can NOT perform this action"}, status=status.HTTP_403_FORBIDDEN)
     
     job.title = request.data['title']
     job.description = request.data['description']
@@ -69,8 +78,13 @@ def update_one_job(request, pk):
     return Response({"success":True, "message":"This job was successfully updated!", "data":serializer.data}, status=status.HTTP_201_CREATED)
 
 @api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
 def delete_one_job(request, pk):
     job = get_object_or_404(Job, id=pk)
+    
+    # check if job creator is the one who wants to update it
+    if job.user != request.user:
+        return Response({"success": False, "message":"You can NOT perform this action"}, status=status.HTTP_403_FORBIDDEN)
     
     job.delete()
     
