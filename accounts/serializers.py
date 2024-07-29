@@ -14,6 +14,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         }
         
 class UserSerializer(serializers.ModelSerializer):
+    resume = serializers.CharField(source='user_profile.resume')
     class Meta:
         model = User
-        fields = ('first_name','last_name','email','username')
+        fields = ('first_name','last_name','email','username', 'resume')
