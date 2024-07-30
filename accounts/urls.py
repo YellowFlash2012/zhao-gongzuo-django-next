@@ -8,5 +8,7 @@ urlpatterns = [
     
     path("profile/update", views.update_user_profile, name="update_user_profile"),
     
+    path("profile/upload-resume", views.upload_resume, name="upload_resume"),
+    
     
 ]

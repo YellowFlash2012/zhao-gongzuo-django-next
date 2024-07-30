@@ -7,6 +7,7 @@ from rest_framework.pagination import PageNumberPagination
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from .serializers import *
+from .validators import *
 
 # Create your views here.
 @api_view(['POST'])
@@ -63,3 +64,26 @@ def update_user_profile(request):
     serializer = UserSerializer(User, many=False)
     
     return Response({'success':True, 'message':'Your profile was updated!', "data":serializer.data}, status=status.HTTP_201_CREATED)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def upload_resume(request):
+
+    user = request.user
+    resume = request.FILES['resume']
+
+    if resume == '':
+        return Response({"success":False, 'error': 'Please upload your resume.' }, status=status.HTTP_400_BAD_REQUEST)
+
+    # check resume file extension
+    isValidFile = validate_file_extension(resume.name)
+
+    if not isValidFile:
+        return Response({"success":False, 'error': 'You can only upload pdf files.' }, status=status.HTTP_400_BAD_REQUEST)
+
+    serializer = UserSerializer(user, many=False)
+
+    user.user_profile.resume.resume = resume
+    user.user_profile.resume.save()
+
+    return Response({"success":True, "message":"Your resume was uploaded successfully!", "data":serializer.data}, status=status.HTTP_201_CREATED)
