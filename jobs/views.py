@@ -135,3 +135,50 @@ def apply_for_a_job(request, pk):
     )
     
     return Response({"success":True, "applied":True, "message":"Job application successful!", "job_id":apply_for_job.id}, status=status.HTTP_201_CREATED)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_loggedin_user_job_applications(request):
+    args = {'user_id':request.user.id}
+    
+    jobs = JobApplication.objects.filter(**args)
+    
+    serializer = JobApplicationSerializer(jobs, many=True)
+    
+    return Response({"success":True, "message":"Here are all the jobs you have applied to!", "data":serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def job_applied_to(request, pk):
+    user = request.user
+    job = get_object_or_404(Job, id=pk)
+    
+    applied = job.jobapplication_set.filter(user=user).exists()
+    
+    return Response({"success":True, "message":"Here is the job you have applied to!", "data":applied}, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_loggedin_user_jobs(request):
+    args = {'user':request.user.id}
+    
+    jobs = Job.objects.filter(**args)
+    
+    serializer = JobSerializer(jobs, many=True)
+    
+    return Response({"success":True, "message":"Here are all your jobs!", "data":serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_list_of_job_applicants(request, pk):
+    user = request.user
+    job = get_object_or_404(Job, id=pk)
+    
+    if job.user != user:
+        return Response({"success": False, "message":"You can't access this resource!"}, status=status.HTTP_403_FORBIDDEN)
+    
+    candidates = job.jobapplication_set.all()
+    
+    serializer = JobApplicationSerializer(candidates, many=True)
+    
+    return Response({"success":True, "message":"Here are all your jobs!", "data":serializer.data}, status=status.HTTP_200_OK)

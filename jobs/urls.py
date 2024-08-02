@@ -15,4 +15,12 @@ urlpatterns = [
     path("stats/<str:topic>", views.get_topic_stats, name="get_topic_stats"),
     
     path("<str:pk>/apply", views.apply_for_a_job, name="apply_for_a_job"),
+    
+    path("profile/jobs/applied", views.get_loggedin_user_job_applications, name="get_loggedin_user_job_applications"),
+    
+    path("profile/jobs", views.get_loggedin_user_jobs, name="get_loggedin_user_jobs"),
+    
+    path("<str:pk>/check", views.job_applied_to, name="job_applied_to"),
+    
+    path("<str:pk>/candidates", views.get_list_of_job_applicants, name="get_list_of_job_applicants"),
 ]
