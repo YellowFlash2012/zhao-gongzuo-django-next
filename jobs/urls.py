@@ -13,4 +13,6 @@ urlpatterns = [
     path("<str:pk>/delete", views.delete_one_job, name="delete_one_job"),
     
     path("stats/<str:topic>", views.get_topic_stats, name="get_topic_stats"),
+    
+    path("<str:pk>/apply", views.apply_for_a_job, name="apply_for_a_job"),
 ]

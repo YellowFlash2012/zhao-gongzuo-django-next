@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -110,3 +111,27 @@ def get_topic_stats(request, topic):
 
     return Response({"success":True, "message":"Here are all the jobs related to that topic", "data":stats}, status=status.HTTP_200_OK)
 
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def apply_for_a_job(request, pk):
+    user = request.user
+    job = get_object_or_404(Job, id=pk)
+    
+    if user.user_profile.resume == "":
+        return Response({"success": False, "message":"You can't apply for a job without a resume. Please upload your resume"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    if job.lastDate < timezone.now():
+        return Response({"success": False, "message":"This job has expired!"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    already_applied = job.jobapplication_set.filter(user=user).exists()
+    
+    if already_applied:
+        return Response({"success": False, "message":"You have already applied for this job!"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    apply_for_job = JobApplication.objects.create(
+        job = job,
+        user = user,
+        resume = user.user_profile_resume
+    )
+    
+    return Response({"success":True, "applied":True, "message":"Job application successful!", "job_id":apply_for_job.id}, status=status.HTTP_201_CREATED)
