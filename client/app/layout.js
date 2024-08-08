@@ -2,11 +2,14 @@ import { Inter } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 
 import Script from "next/script";
+
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
+// import "bootstrap/dist/css/bootstrap.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,10 +35,10 @@ export default function RootLayout({ children }) {
                   strategy="beforeInteractive"
                   src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
               ></Script>
-              <Script
+              {/* <Script
                   strategy="beforeInteractive"
                   src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
-              ></Script>
+              ></Script> */}
               <Header />
               <main>{children}</main>
               <Footer />

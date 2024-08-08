@@ -5,7 +5,9 @@ import Image from "next/image";
 
 const Header = () => {
 
-    const user = "james";
+    const user = null;
+
+    const loading = false;
 
     const logoutHandler = () => { }
     

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import moment from "moment";
 
-const JobItem = ({job}) => {
+const JobItem = ({ job }) => {
+    console.log(job);
     return (
         <Link href={`/jobs/${job.id}`}>
             <span className="job-listing">
