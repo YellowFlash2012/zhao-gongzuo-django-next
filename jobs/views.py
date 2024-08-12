@@ -34,9 +34,11 @@ def get_all_jobs(request):
 def get_one_job(request, pk):
     job = get_object_or_404(Job, id=pk)
     
+    applicants = job.jobapplication_set.all().count()
+    
     serializer = JobSerializer(job, many=False)
     
-    return Response({"success":True, "message":"Here is the job you requested", "data":serializer.data}, status=status.HTTP_200_OK)
+    return Response({"success":True, "message":"Here is the job you requested", "data":serializer.data, "number_of_applicants":applicants}, status=status.HTTP_200_OK)
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
