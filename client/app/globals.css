@@ -2,6 +2,8 @@
 
 @import 'bootstrap/dist/css/bootstrap.css';
 
+
+
 /*
 =============== 
 Variables
@@ -708,4 +710,9 @@ footer {
     background-repeat: no-repeat;
     border-color: grey;
     outline: 0;
+}
+
+/* map container style */
+#map {
+    height: 536px;
 }

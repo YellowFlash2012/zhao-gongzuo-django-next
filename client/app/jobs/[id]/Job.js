@@ -1,16 +1,21 @@
 "use client"
 
+import dynamic from "next/dynamic";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import moment from "moment";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
 import { addCommas } from "@/utils/helpers";
+import Map from "@/components/Map";
+
 
 const Job = () => {
     const { id } = useParams();
 
     const [job, setJob] = useState();
+
+    
 
     const [loading, setLoading] = useState(false);
 
@@ -35,7 +40,18 @@ const Job = () => {
 
     useEffect(() => {
         fetchSingleJob()
+
+        const coordinates = job
+            ? job?.data?.point.split("(")[1].replace(")", "").split(" ")
+            : [51.505, -0.09];
+
+        console.log(coordinates);
     }, [id])
+
+    const Map = dynamic(() => import("@/components/Map"), {
+        ssr: false,
+        loading: () => <p>Loading...</p>,
+    });
     
     return (
         <>
@@ -129,19 +145,28 @@ const Job = () => {
                                                 <tr>
                                                     <td>Expected Salary</td>
                                                     <td>:</td>
-                                                    <td>${addCommas( job.data.salary)}</td>
+                                                    <td>
+                                                        $
+                                                        {addCommas(
+                                                            job.data.salary
+                                                        )}
+                                                    </td>
                                                 </tr>
 
                                                 <tr>
                                                     <td>Education</td>
                                                     <td>:</td>
-                                                    <td>{job.data.education}</td>
+                                                    <td>
+                                                        {job.data.education}
+                                                    </td>
                                                 </tr>
 
                                                 <tr>
                                                     <td>Experience</td>
                                                     <td>:</td>
-                                                    <td>{job.data.experience}</td>
+                                                    <td>
+                                                        {job.data.experience}
+                                                    </td>
                                                 </tr>
 
                                                 <tr>
@@ -157,13 +182,9 @@ const Job = () => {
                                         <h4 className="mt-5 mb-4">
                                             Job Location
                                         </h4>
-                                        <div
-                                            id="job-map"
-                                            style={{
-                                                height: 520,
-                                                width: "100%",
-                                            }}
-                                        />
+                                        <div>
+                                            <Map/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -196,7 +217,10 @@ const Job = () => {
                                             This job is expired. Last date to
                                             apply for this job was:{" "}
                                             <b>
-                                                {job.data.lastDate.substring(0, 10)}
+                                                {job.data.lastDate.substring(
+                                                    0,
+                                                    10
+                                                )}
                                             </b>
                                             <br /> Checkout others job on
                                             Jobbee.
