@@ -28,7 +28,7 @@ def get_all_jobs(request):
     
     serializer = JobSerializer(queryset, many=True)
     
-    return Response({"success":True, "count":len(serializer.data), "message":"Here are all the jobs on this platform", "data":serializer.data, 'resPerPage':resPerPage}, status=status.HTTP_200_OK)
+    return Response({"success":True, "count":count, "message":"Here are all the jobs on this platform", "data":serializer.data, 'resPerPage':resPerPage}, status=status.HTTP_200_OK)
 
 @api_view(["GET"])
 def get_one_job(request, pk):
