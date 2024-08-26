@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useGlobalAuthContext } from "@/context/AuthContext";
+import { toast } from "react-toastify";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -13,20 +14,24 @@ const Login = () => {
 
     const router = useRouter();
 
-    const { isLoading, error, isAuthenticated } = useGlobalAuthContext();
+    const { isLoading, error, isAuthenticated, login } = useGlobalAuthContext();
 
     const loginHandler = async (e) => {
         e.preventDefault()
 
-        console.log(email, password);
+        // console.log(email, password);
+
+        login({username:email, password})
     }
 
     useEffect (() => {
         if (error) {
-            alert(error)
+            toast.error(error)
+            
         }
 
         if (isAuthenticated && !isLoading) {
+            toast.success(`Welcome back, ${email}`)
             router.push("/")
         }
     },[error, isAuthenticated, isLoading])
