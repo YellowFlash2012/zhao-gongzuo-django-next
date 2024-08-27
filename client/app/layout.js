@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "@/context/AuthContext";
-// import "bootstrap/dist/css/bootstrap.css";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -47,12 +47,19 @@ export default function RootLayout({ children }) {
                         strategy="beforeInteractive"
                         src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
                     ></Script>
+
+                    <script
+                        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                        crossOrigin="anonymous"
+                    ></script>
+                    <script
+                        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+                        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+                        crossOrigin="anonymous"
+                    ></script>
                 </body>
             </AuthProvider>
-            {/* <Script
-                  strategy="beforeInteractive"
-                  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
-              ></Script> */}
 
             {/* <Script
                 src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"

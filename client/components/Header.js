@@ -1,16 +1,19 @@
-"use client"
-import { useContext } from "react";
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useGlobalAuthContext } from "@/context/AuthContext";
+import { toast } from "react-toastify";
 
 const Header = () => {
+    const { user, isLoading, logoutUser } = useGlobalAuthContext();
 
-    const user = null;
+    const logoutHandler = () => {
+        logoutUser()
 
-    const loading = false;
+        toast.success(`See you next time, ${user.first_name}`)
+    };
 
-    const logoutHandler = () => { }
-    
     return (
         <div className="navWrapper">
             <div className="navContainer">
@@ -35,53 +38,62 @@ const Header = () => {
                         </button>
                     </Link>
                     {user ? (
-                        <div className="dropdown ml-3">
-                            <a
-                                className="btn dropdown-toggle mr-4"
-                                id="dropDownMenuButton"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
+                        <div className="dropdown ms-3">
+                            <button
+                                className="btn btn-secondary dropdown-toggle me-4"
+                                type="button"
+                                data-bs-toggle="dropdown"
                                 aria-expanded="false"
                             >
-                                {/* <span>Hi, {user.first_name}</span>{" "} */}
-                            </a>
+                                Hi, {user?.first_name}
+                            </button>
 
-                            <div
-                                className="dropdown-menu"
-                                aria-labelledby="dropDownMenuButton"
-                            >
-                                <Link href="/employeer/jobs">
-                                    <span className="dropdown-item">My Jobs</span>
-                                </Link>
+                            <ul className="dropdown-menu">
+                                <li>
+                                    <Link
+                                        className="dropdown-item"
+                                        href="/employeer/jobs"
+                                    >
+                                        My Jobs
+                                    </Link>
+                                </li>
 
-                                <Link href="/me/applied">
-                                    <span className="dropdown-item">
-                                        Jobs Applied
-                                    </span>
-                                </Link>
+                                <li>
+                                    <Link
+                                        className="dropdown-item"
+                                        href="/me/applied"
+                                    >
+                                        Jobs Applications
+                                    </Link>
+                                </li>
 
-                                <Link href="/me">
-                                    <span className="dropdown-item">Profile</span>
-                                </Link>
+                                <li>
+                                    <Link className="dropdown-item" href="/me">
+                                        Profile
+                                    </Link>
+                                </li>
 
-                                <Link href="/upload/resume">
-                                    <span className="dropdown-item">
+                                <li>
+                                    <Link
+                                        className="dropdown-item"
+                                        href="/upload/resume"
+                                    >
                                         Upload Resume
-                                    </span>
-                                </Link>
+                                    </Link>
+                                </li>
 
-                                <Link href="/">
+                                <li>
                                     <span
                                         className="dropdown-item text-danger"
                                         onClick={logoutHandler}
                                     >
                                         Logout
                                     </span>
-                                </Link>
-                            </div>
+                                </li>
+                            </ul>
                         </div>
                     ) : (
-                        !loading && (
+                        !isLoading && (
                             <Link href="/login">
                                 <button className="loginButtonHeader">
                                     <span>Login</span>

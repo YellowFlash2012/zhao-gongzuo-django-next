@@ -54,7 +54,7 @@ export default function Home() {
                 `${process.env.API_URL}/api/v1/jobs/?${queryStr}`
             );
 
-            console.log(res.data);
+            // console.log(res.data);
 
             return setJobs(res.data);
         } catch (error) {
