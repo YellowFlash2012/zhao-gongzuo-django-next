@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import LoginUser from "@/app/actions/login";
 import GetUser from "@/app/actions/getUser";
 import LogoutUser from "@/app/actions/logout";
+import RegisterUser from "@/app/actions/register";
 
 const { createContext, useState, useContext, useEffect } = require("react");
 
@@ -15,6 +16,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [message, setMessage] = useState("");
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -42,6 +44,34 @@ export const AuthProvider = ({ children }) => {
                 setIsLoading(false)
 
                 router.push("/")
+            }
+        } catch (error) {
+            setIsLoading(false)
+            setError(error.response && (error.response.data.detail || error.response.data.error))
+        }
+    }
+
+    
+    const register = async ({ firstName, lastName, email, password }) => {
+        try {
+            // console.log(username);
+            setIsLoading(true)
+
+            const res = await RegisterUser(
+                firstName,
+                lastName,
+                email,
+                password
+            );
+
+            console.log(res);
+
+            if (res?.success === true) {
+                setIsLoading(false)
+
+                setMessage(res?.message)
+
+                router.push("/login")
             }
         } catch (error) {
             setIsLoading(false)
@@ -98,7 +128,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    return <AuthContext.Provider value={{isLoading, error,user,isAuthenticated, login, loadUser, logoutUser}}>
+    return <AuthContext.Provider value={{isLoading, error, message,user,isAuthenticated, register, login, loadUser, logoutUser}}>
         {children}
     </AuthContext.Provider>
 }

@@ -456,7 +456,7 @@ footer {
 }
 .modalWrapper {
     width: 75%;
-    height: 70vh;
+    height: 100%;
     background: rgb(255, 255, 255);
     border-radius: 10px;
     position: relative;

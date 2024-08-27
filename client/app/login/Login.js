@@ -14,7 +14,7 @@ const Login = () => {
 
     const router = useRouter();
 
-    const { isLoading, error, isAuthenticated, login } = useGlobalAuthContext();
+    const { isLoading, error, isAuthenticated, login, user } = useGlobalAuthContext();
 
     const loginHandler = async (e) => {
         e.preventDefault()
@@ -30,8 +30,8 @@ const Login = () => {
             
         }
 
-        if (isAuthenticated && !isLoading) {
-            toast.success(`Welcome back, ${email}`)
+        if (isAuthenticated && !isLoading && user) {
+            toast.success(`Welcome back, ${user?.first_name}`)
             router.push("/")
         }
     },[error, isAuthenticated, isLoading])
