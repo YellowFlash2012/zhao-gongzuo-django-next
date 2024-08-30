@@ -61,14 +61,14 @@ const Header = () => {
                                 <li>
                                     <Link
                                         className="dropdown-item"
-                                        href="/me/applied"
+                                        href="/profile/applied"
                                     >
                                         Jobs Applications
                                     </Link>
                                 </li>
 
                                 <li>
-                                    <Link className="dropdown-item" href="/me">
+                                    <Link className="dropdown-item" href="/profile">
                                         Profile
                                     </Link>
                                 </li>
@@ -86,6 +86,7 @@ const Header = () => {
                                     <span
                                         className="dropdown-item text-danger"
                                         onClick={logoutHandler}
+                                        style={{cursor:"pointer"}}
                                     >
                                         Logout
                                     </span>

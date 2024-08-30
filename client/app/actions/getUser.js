@@ -1,6 +1,7 @@
 "use server";
 
 import axios from "axios";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 async function GetUser() {
@@ -18,6 +19,7 @@ async function GetUser() {
         // console.log(res.data.data);
 
         if (res.data) {
+            // revalidatePath("/")
 
             return {
                 user: res?.data?.data,

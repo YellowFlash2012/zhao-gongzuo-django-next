@@ -6,6 +6,8 @@ import LoginUser from "@/app/actions/login";
 import GetUser from "@/app/actions/getUser";
 import LogoutUser from "@/app/actions/logout";
 import RegisterUser from "@/app/actions/register";
+import { VerifyAccessToken } from "@/utils/VerifyAccessToken";
+import { toast } from "react-toastify";
 
 const { createContext, useState, useContext, useEffect } = require("react");
 
@@ -43,7 +45,12 @@ export const AuthProvider = ({ children }) => {
                 setIsAuthenticated(true)
                 setIsLoading(false)
 
-                router.push("/")
+                toast.success(
+                    user
+                        ? `Welcome back, ${user?.first_name}`
+                        : `Welcome back`
+                );
+                // router.push("/")
             }
         } catch (error) {
             setIsLoading(false)
@@ -89,8 +96,8 @@ export const AuthProvider = ({ children }) => {
             // console.log(res);
 
             if (res?.user) {
-                setIsAuthenticated(true);
                 setIsLoading(false);
+                setIsAuthenticated(true);
 
                 setUser(res.user)
             }
@@ -128,9 +135,36 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    return <AuthContext.Provider value={{isLoading, error, message,user,isAuthenticated, register, login, loadUser, logoutUser}}>
-        {children}
-    </AuthContext.Provider>
+    const IsAuthenticatedUser = async (children ) => {
+        const res = await VerifyAccessToken();
+
+        console.log(res);
+
+        if (res===true) {
+            return {children}
+        } else {
+            router.push("/login")
+        }
+    }
+
+    return (
+        <AuthContext.Provider
+            value={{
+                isLoading,
+                error,
+                message,
+                user,
+                isAuthenticated,
+                register,
+                login,
+                loadUser,
+                logoutUser,
+                IsAuthenticatedUser,
+            }}
+        >
+            {children}
+        </AuthContext.Provider>
+    );
 }
 
 export const useGlobalAuthContext = () => {

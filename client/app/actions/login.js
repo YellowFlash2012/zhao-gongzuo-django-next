@@ -1,6 +1,7 @@
 "use server";
 
 import axios from "axios";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 async function LoginUser(username, password) {
@@ -15,6 +16,8 @@ async function LoginUser(username, password) {
 
         if (res?.data?.access) {
             cookies().set("access", res.data.access);
+
+            // revalidatePath("/")
             
             return {
                 success: true,

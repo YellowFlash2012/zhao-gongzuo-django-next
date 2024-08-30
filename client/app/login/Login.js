@@ -21,7 +21,10 @@ const Login = () => {
 
         // console.log(email, password);
 
-        login({username:email, password})
+        login({ username: email, password })
+        
+    
+        router.push("/");
     }
 
     useEffect (() => {
@@ -30,9 +33,9 @@ const Login = () => {
             
         }
 
-        if (isAuthenticated && !isLoading && user) {
-            toast.success(`Welcome back, ${user?.first_name}`)
-            router.push("/")
+        if (isAuthenticated && user?.first_name) {
+        
+            // toast.success(`Welcome back, ${user?.first_name}`);
         }
     },[error, isAuthenticated, isLoading])
 
