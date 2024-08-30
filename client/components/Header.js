@@ -76,7 +76,7 @@ const Header = () => {
                                 <li>
                                     <Link
                                         className="dropdown-item"
-                                        href="/upload/resume"
+                                        href="/profile/upload"
                                     >
                                         Upload Resume
                                     </Link>

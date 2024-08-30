@@ -10,6 +10,7 @@ import LogoutUser from "@/app/actions/logout";
 import RegisterUser from "@/app/actions/register";
 import { VerifyAccessToken } from "@/utils/VerifyAccessToken";
 import UpdateUser from "@/app/actions/updateUser";
+import UploadResume from "@/app/actions/uploadResume";
 
 
 const AuthContext = createContext();
@@ -179,6 +180,30 @@ export const AuthProvider = ({ children }) => {
             );
         }
     };
+    
+    const uploadResume = async (formData) => {
+        try {
+            // console.log(username);
+            setIsLoading(true);
+
+            const res = await UploadResume(formData);
+
+            // console.log(res);
+
+            if (res?.success === true) {
+                setIsLoading(false);
+
+                setMessage(res?.message);
+
+            }
+        } catch (error) {
+            setIsLoading(false);
+            setError(
+                error.response &&
+                    (error.response.data.detail || error.response.data.error)
+            );
+        }
+    };
 
     return (
         <AuthContext.Provider
@@ -194,6 +219,7 @@ export const AuthProvider = ({ children }) => {
                 logoutUser,
                 IsAuthenticatedUser,
                 updateUser,
+                uploadResume,
             }}
         >
             {children}
