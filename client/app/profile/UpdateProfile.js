@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const UpdateProfile = () => {
-    const { isLoading, error, user, message, IsAuthenticatedUser } =
+    const { isLoading, error, user, message, IsAuthenticatedUser, updateUser } =
         useGlobalAuthContext();
     
 
@@ -16,16 +16,20 @@ const UpdateProfile = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const router = useRouter();
 
     const updateProfileHandler = (e) => {
         e.preventDefault();
 
-        console.log(email, password);
+        // console.log(email, password);
 
-        // register({ firstName, lastName, email, password });
+        updateUser({ firstName, lastName, email, password });
+
+        toast.success(message)
+
+
     };
 
-    const router = useRouter();
 
     useEffect(() => {
 
