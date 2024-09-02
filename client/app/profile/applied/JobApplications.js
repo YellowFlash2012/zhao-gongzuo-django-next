@@ -1,16 +1,22 @@
 "use client"
 
+import { useEffect } from "react";
 import Link from "next/link";
 import DataTable from "react-data-table-component";
+import { toast } from "react-toastify";
 
 import { useGlobalJobContext } from "@/context/JobContext";
-import { useEffect } from "react";
-import { toast } from "react-toastify";
 
 
 const JobApplications = () => {
 
-    const { myApplications: jobs, error, message, isLoading } = useGlobalJobContext();
+    const {
+        myApplications: jobs,
+        error,
+        message,
+        isLoading,
+        getMyJobApplications,
+    } = useGlobalJobContext();
     
     console.log(jobs);
 
@@ -72,6 +78,8 @@ const JobApplications = () => {
         if (error) {
             toast.error(error)
         }
+
+        getMyJobApplications()
     },[error])
     
     return (

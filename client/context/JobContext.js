@@ -2,6 +2,7 @@
 
 const { createContext, useState, useContext, useEffect } = require("react");
 import GetMyJobApplications from "@/app/actions/getMyJobApplications";
+import AddNewJob from "@/app/actions/jobs/addNewJob";
 import ApplyToJob from "@/app/actions/jobs/applyToJob";
 import CheckJobAppliedTo from "@/app/actions/jobs/checkJobAppliedTo";
 import GetTopicStats from "@/app/actions/jobs/getTopicStats";
@@ -123,6 +124,29 @@ export const JobProvider = ({ children }) => {
         }
     };
 
+    const addNewJob = async (data) => {
+        try {
+            // console.log(username);
+            setIsLoading(true);
+
+            const res = await AddNewJob(data);
+
+            // console.log(res);
+
+            if (res) {
+                setIsLoading(false);
+
+                setMessage(res?.message);
+            }
+        } catch (error) {
+            setIsLoading(false);
+            setError(
+                error.response &&
+                    (error.response.data.detail || error.response.data.error)
+            );
+        }
+    };
+
 
 
     return (
@@ -137,7 +161,8 @@ export const JobProvider = ({ children }) => {
                 applyToJob,
                 checkJobAppliedTo,
                 getTopicStats,
-            
+                getMyJobApplications,
+                addNewJob,
             }}
         >
             {children}

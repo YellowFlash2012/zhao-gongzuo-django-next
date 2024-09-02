@@ -16,7 +16,7 @@ import os
 class JobType(models.TextChoices):
     FullTime = "Full Time"
     PartTime = "Part Time"
-    Internship = "Internship"
+    Internship = "Internship" 
 
 class Education(models.TextChoices):
     Bachelors = "Bachelors"
