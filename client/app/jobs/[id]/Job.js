@@ -26,12 +26,14 @@ const Job = () => {
         checkJobAppliedTo,
     } = useGlobalJobContext();
 
+    // console.log(isLoading, applied);
+
     
     const fetchSingleJob = async() => {
         try {
             const res = await axios.get(`${process.env.API_URL}/api/v1/jobs/${id}`);
             
-            console.log(res.data);
+            // console.log(res.data);
             
             return setJob(res.data);
         } catch (error) {
@@ -41,7 +43,7 @@ const Job = () => {
     
     const candidates = job?.number_of_applicants;
 
-    const d1 = moment(job.lastDate);
+    const d1 = moment(job?.data.lastDate);
     const d2 = moment(Date.now());
     const isLastDatePassed = d1.diff(d2, "days") < 0 ? true : false;
 
@@ -52,13 +54,13 @@ const Job = () => {
             ? job?.data?.point.split("(")[1].replace(")", "").split(" ")
             : [51.505, -0.09];
 
-        console.log(coordinates);
+        // console.log(coordinates);
 
         if (error) {
             toast.error(error)
         }
 
-        checkJobAppliedTo(job.id)
+        checkJobAppliedTo(job?.data.id)
     }, [id, error])
 
     const Map = dynamic(() => import("@/components/Map"), {

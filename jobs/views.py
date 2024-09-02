@@ -111,7 +111,7 @@ def get_topic_stats(request, topic):
         max_salary = Max('salary')
     )
 
-    return Response({"success":True, "message":"Here are all the jobs related to that topic", "data":stats}, status=status.HTTP_200_OK)
+    return Response({"success":True, "message":"Here are all the stats related to that topic", "data":stats}, status=status.HTTP_200_OK)
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])

@@ -2,6 +2,8 @@
 
 const { createContext, useState, useContext, useEffect } = require("react");
 import ApplyToJob from "@/app/actions/jobs/applyToJob";
+import CheckJobAppliedTo from "@/app/actions/jobs/checkJobAppliedTo";
+import GetTopicStats from "@/app/actions/jobs/getTopicStats";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
@@ -13,6 +15,8 @@ export const JobProvider = ({ children }) => {
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
     const [applied, setApplied] = useState(false);
+
+    const [stats, setStats] = useState([]);
     
 
     const router = useRouter();
@@ -41,21 +45,46 @@ export const JobProvider = ({ children }) => {
             );
         }
     };
+
     const checkJobAppliedTo = async (id) => {
         try {
             // console.log(username);
             setIsLoading(true);
 
-            const res = await checkJobAppliedTo(id);
+            const res = await CheckJobAppliedTo(id);
 
-            // console.log(res);
+            console.log(res);
 
-            if (res?.data?.data === true) {
+            if (res) {
                 setIsLoading(false);
 
                 setApplied(true);
 
-                setMessage(res?.data?.message)
+                setMessage(res?.message)
+            }
+        } catch (error) {
+            setIsLoading(false);
+            setError(
+                error.response &&
+                    (error.response.data.detail || error.response.data.error)
+            );
+        }
+    };
+    const getTopicStats = async (topic) => {
+        try {
+            // console.log(username);
+            setIsLoading(true);
+
+            const res = await GetTopicStats(topic);
+
+            // console.log(res);
+
+            if (res) {
+                setIsLoading(false);
+
+                setStats(res?.data)
+
+                setMessage(res?.message)
             }
         } catch (error) {
             setIsLoading(false);
@@ -75,8 +104,10 @@ export const JobProvider = ({ children }) => {
                 error,
                 message,
                 applied,
+                stats,
                 applyToJob,
                 checkJobAppliedTo,
+                getTopicStats,
             }}
         >
             {children}

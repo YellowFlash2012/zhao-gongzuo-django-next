@@ -4,23 +4,17 @@ import axios from "axios";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
-async function CheckJobAppliedTo(id) {
+async function GetTopicStats(topic) {
     const cookieStore = cookies();
     const access = cookieStore.get("access");
 
     // console.log(access);
     try {
         const res = await axios.get(
-            `${process.env.API_URL}/api/v1/jobs/${id}/check`,
-            
-            {
-                headers: {
-                    Authorization: `Bearer ${access?.value}`,
-                },
-            }
+            `${process.env.API_URL}/api/v1/jobs/stats/${topic}`,
         );
 
-        // console.log(res.data.data);
+        // console.log(res.data);
 
         if (res.data) {
             // revalidatePath("/")
@@ -40,4 +34,4 @@ async function CheckJobAppliedTo(id) {
     }
 }
 
-export default CheckJobAppliedTo;
+export default GetTopicStats;
