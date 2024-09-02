@@ -20,7 +20,7 @@ urlpatterns = [
     
     path("profile/jobs", views.get_loggedin_user_jobs, name="get_loggedin_user_jobs"),
     
-    path("<str:pk>/check", views.job_applied_to, name="job_applied_to"),
+    path("<str:pk>/check", views.check_job_applied_to, name="check_job_applied_to"),
     
     path("<str:pk>/candidates", views.get_list_of_job_applicants, name="get_list_of_job_applicants"),
 ]

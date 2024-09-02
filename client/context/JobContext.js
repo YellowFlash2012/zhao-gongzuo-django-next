@@ -1,6 +1,7 @@
 "use client";
 
 const { createContext, useState, useContext, useEffect } = require("react");
+import GetMyJobApplications from "@/app/actions/getMyJobApplications";
 import ApplyToJob from "@/app/actions/jobs/applyToJob";
 import CheckJobAppliedTo from "@/app/actions/jobs/checkJobAppliedTo";
 import GetTopicStats from "@/app/actions/jobs/getTopicStats";
@@ -17,6 +18,7 @@ export const JobProvider = ({ children }) => {
     const [applied, setApplied] = useState(false);
 
     const [stats, setStats] = useState([]);
+    const [myApplications, setMyApplications] = useState([]);
     
 
     const router = useRouter();
@@ -70,6 +72,7 @@ export const JobProvider = ({ children }) => {
             );
         }
     };
+    
     const getTopicStats = async (topic) => {
         try {
             // console.log(username);
@@ -94,6 +97,31 @@ export const JobProvider = ({ children }) => {
             );
         }
     };
+    
+    const getMyJobApplications = async () => {
+        try {
+            // console.log(username);
+            setIsLoading(true);
+
+            const res = await GetMyJobApplications()
+
+            // console.log(res);
+
+            if (res) {
+                setIsLoading(false);
+
+                setMyApplications(res?.data)
+
+                setMessage(res?.message)
+            }
+        } catch (error) {
+            setIsLoading(false);
+            setError(
+                error.response &&
+                    (error.response.data.detail || error.response.data.error)
+            );
+        }
+    };
 
 
 
@@ -105,9 +133,11 @@ export const JobProvider = ({ children }) => {
                 message,
                 applied,
                 stats,
+                myApplications,
                 applyToJob,
                 checkJobAppliedTo,
                 getTopicStats,
+            
             }}
         >
             {children}

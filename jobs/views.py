@@ -151,7 +151,7 @@ def get_loggedin_user_job_applications(request):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def job_applied_to(request, pk):
+def check_job_applied_to(request, pk):
     user = request.user
     job = get_object_or_404(Job, id=pk)
     
