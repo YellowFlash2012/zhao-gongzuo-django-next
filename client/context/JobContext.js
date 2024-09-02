@@ -5,6 +5,9 @@ import GetMyJobApplications from "@/app/actions/getMyJobApplications";
 import AddNewJob from "@/app/actions/jobs/addNewJob";
 import ApplyToJob from "@/app/actions/jobs/applyToJob";
 import CheckJobAppliedTo from "@/app/actions/jobs/checkJobAppliedTo";
+import DeleteJob from "@/app/actions/jobs/employer/deleteJob";
+import GetAllJobsOfAnEmployer from "@/app/actions/jobs/employer/getAllJobs";
+import UpdateJob from "@/app/actions/jobs/employer/updateJob";
 import GetTopicStats from "@/app/actions/jobs/getTopicStats";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -19,6 +22,8 @@ export const JobProvider = ({ children }) => {
     const [applied, setApplied] = useState(false);
 
     const [stats, setStats] = useState([]);
+    const [jobs, setJobs] = useState([]);
+    const [job, setJob] = useState(null);
     const [myApplications, setMyApplications] = useState([]);
     
 
@@ -146,8 +151,79 @@ export const JobProvider = ({ children }) => {
             );
         }
     };
+    
+    const updateJobByEmployer = async (id, data) => {
+        try {
+            // console.log(username);
+            setIsLoading(true);
 
+            const res = await UpdateJob(id,data);
 
+            // console.log(res);
+
+            if (res) {
+                setIsLoading(false);
+
+                setJob(res?.data)
+
+                setMessage(res?.message);
+            }
+        } catch (error) {
+            setIsLoading(false);
+            setError(
+                error.response &&
+                    (error.response.data.detail || error.response.data.error)
+            );
+        }
+    };
+
+    const getAllJobsOfAnEmployer = async () => {
+        try {
+            // console.log(username);
+            setIsLoading(true);
+
+            const res = await GetAllJobsOfAnEmployer();
+
+            // console.log(res);
+
+            if (res) {
+                setIsLoading(false);
+
+                setJobs(res?.data);
+
+    
+            }
+        } catch (error) {
+            setIsLoading(false);
+            setError(
+                error.response &&
+                    (error.response.data.detail || error.response.data.error)
+            );
+        }
+    };
+    
+    const deleteJobHandler = async (id) => {
+        try {
+            // console.log(username);
+            setIsLoading(true);
+
+            const res = await DeleteJob(id);
+
+            // console.log(res);
+
+            if (res) {
+                setIsLoading(false);
+
+                setMessage(res?.message);
+            }
+        } catch (error) {
+            setIsLoading(false);
+            setError(
+                error.response &&
+                    (error.response.data.detail || error.response.data.error)
+            );
+        }
+    };
 
     return (
         <JobContext.Provider
@@ -163,6 +239,9 @@ export const JobProvider = ({ children }) => {
                 getTopicStats,
                 getMyJobApplications,
                 addNewJob,
+                getAllJobsOfAnEmployer,
+                updateJobByEmployer,
+                deleteJobHandler,
             }}
         >
             {children}

@@ -18,7 +18,7 @@ urlpatterns = [
     
     path("profile/jobs/applied", views.get_loggedin_user_job_applications, name="get_loggedin_user_job_applications"),
     
-    path("profile/jobs", views.get_loggedin_user_jobs, name="get_loggedin_user_jobs"),
+    path("profile/employer/jobs", views.get_all_jobs_posted_by_logged_in_employer, name="get_all_jobs_posted_by_logged_in_employer"),
     
     path("<str:pk>/check", views.check_job_applied_to, name="check_job_applied_to"),
     

@@ -161,7 +161,7 @@ def check_job_applied_to(request, pk):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def get_loggedin_user_jobs(request):
+def get_all_jobs_posted_by_logged_in_employer(request):
     args = {'user':request.user.id}
     
     jobs = Job.objects.filter(**args)
@@ -183,4 +183,4 @@ def get_list_of_job_applicants(request, pk):
     
     serializer = JobApplicationSerializer(candidates, many=True)
     
-    return Response({"success":True, "message":"Here are all your jobs!", "data":serializer.data}, status=status.HTTP_200_OK)
+    return Response({"success":True, "message":f"Here are all the candidates that applied for job {job.id}!", "data":serializer.data}, status=status.HTTP_200_OK)

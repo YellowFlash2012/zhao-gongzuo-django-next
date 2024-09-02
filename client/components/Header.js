@@ -52,7 +52,7 @@ const Header = () => {
                                 <li>
                                     <Link
                                         className="dropdown-item"
-                                        href="/employeer/jobs"
+                                        href="/employer/jobs"
                                     >
                                         My Jobs
                                     </Link>
