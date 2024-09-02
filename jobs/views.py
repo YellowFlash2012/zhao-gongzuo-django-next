@@ -157,7 +157,7 @@ def job_applied_to(request, pk):
     
     applied = job.jobapplication_set.filter(user=user).exists()
     
-    return Response({"success":True, "message":"Here is the job you have applied to!", "data":applied}, status=status.HTTP_200_OK)
+    return Response({"success":True, "message":"You have already applied to this job!", "data":applied}, status=status.HTTP_200_OK)
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])

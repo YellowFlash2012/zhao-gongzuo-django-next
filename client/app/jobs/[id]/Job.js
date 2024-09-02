@@ -8,6 +8,8 @@ import { useParams } from "next/navigation";
 
 import { addCommas } from "@/utils/helpers";
 import Map from "@/components/Map";
+import { useGlobalJobContext } from "@/context/JobContext";
+import { toast } from "react-toastify";
 
 
 const Job = () => {
@@ -15,11 +17,14 @@ const Job = () => {
 
     const [job, setJob] = useState();
 
-    
-
-    const [loading, setLoading] = useState(false);
-
-    const [applied, setApplied] = useState(false);
+    const {
+        isLoading,
+        error,
+        message,
+        applyToJob,
+        applied,
+        checkJobAppliedTo,
+    } = useGlobalJobContext();
 
     
     const fetchSingleJob = async() => {
@@ -35,8 +40,10 @@ const Job = () => {
     }
     
     const candidates = job?.number_of_applicants;
-    const applyToJobHandler = () => { }
-    const isLastDatePassed = new Date();
+
+    const d1 = moment(job.lastDate);
+    const d2 = moment(Date.now());
+    const isLastDatePassed = d1.diff(d2, "days") < 0 ? true : false;
 
     useEffect(() => {
         fetchSingleJob()
@@ -46,12 +53,24 @@ const Job = () => {
             : [51.505, -0.09];
 
         console.log(coordinates);
-    }, [id])
+
+        if (error) {
+            toast.error(error)
+        }
+
+        checkJobAppliedTo(job.id)
+    }, [id, error])
 
     const Map = dynamic(() => import("@/components/Map"), {
         ssr: false,
         loading: () => <p>Loading...</p>,
     });
+
+    const applyToJobHandler = () => {
+        applyToJob(job?.data?.id)
+
+        toast.success(message)
+    }
     
     return (
         <>
@@ -80,7 +99,7 @@ const Job = () => {
 
                                         <div className="mt-3">
                                             <span>
-                                                {loading ? (
+                                                {isLoading ? (
                                                     "Loading..."
                                                 ) : applied ? (
                                                     <button
@@ -91,7 +110,7 @@ const Job = () => {
                                                             aria-hidden
                                                             className="fas fa-check"
                                                         ></i>{" "}
-                                                        {loading
+                                                        {isLoading
                                                             ? "Loading"
                                                             : "Applied"}
                                                     </button>
@@ -105,8 +124,8 @@ const Job = () => {
                                                             isLastDatePassed
                                                         }
                                                     >
-                                                        {loading
-                                                            ? "Loading..."
+                                                        {isLoading
+                                                            ? "Applying..."
                                                             : "Apply Now"}
                                                     </button>
                                                 )}
